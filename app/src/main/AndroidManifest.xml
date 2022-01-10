@@ -9,9 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mascotas_favoritas">
-        <activity android:name=".MascotasFavoritas"
-            android:parentActivityName=".MainActivity">
-        </activity>
+        <activity android:name=".Biografia"></activity>
+        <activity android:name=".Contacto" />
+        <activity
+            android:name=".MascotasFavoritas"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

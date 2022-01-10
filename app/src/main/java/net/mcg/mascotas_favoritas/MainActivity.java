@@ -2,6 +2,7 @@ package net.mcg.mascotas_favoritas;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,14 +16,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    RecyclerView rvMascotas;
-    adaptadorMascota apatador;
-    List<mascota> lista = new ArrayList<>();
+
+
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
 
     @Override
@@ -30,31 +36,38 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        iniciar();
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        tabLayout = (TabLayout) findViewById(R.id.appbar);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+
+        SetupViewPager();
+
+        if(toolbar != null){
+            setSupportActionBar(toolbar);
+        }
     }
 
-    private void iniciar(){
-        rvMascotas = findViewById(R.id.rvMascotas);
-        rvMascotas.setLayoutManager(new LinearLayoutManager(this));
+    private ArrayList<Fragment> agregarFragments(){
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        fragments.add(new InicioFragment());
+        fragments.add(new PerfilFragment());
 
-        //List<mascota> lista = new ArrayList<>();
-
-
-        lista.add(new mascota(R.drawable.husky, "Mascota 1", "0"));
-        lista.add(new mascota(R.drawable.doberman, "Mascota 2", "0"));
-        lista.add(new mascota(R.drawable.pastor_aleman, "Macota 3", "0"));
-        lista.add(new mascota(R.drawable.descarga, "Mascota 4", "0"));
-        lista.add(new mascota(R.drawable.caniche, "Mascota 5", "0"));
-
-        apatador = new adaptadorMascota(lista, this);
-        rvMascotas.setAdapter(apatador);
+        return fragments;
     }
+
+    private void SetupViewPager(){
+        viewPager.setAdapter(new PageAdapter(getSupportFragmentManager(), agregarFragments()));
+        tabLayout.setupWithViewPager(viewPager);
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menuop, menu);
 
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     // al dar click en el hueso blanco se ejecuta este metodo.
@@ -76,15 +89,31 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.fav_icon:
                 verFavoritos();
-                return true;
+                break;
+            case R.id.mContacto:
+                contacto();
+                break;
+            case  R.id.mAbout:
+                bio();
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
-
+        return true;
     }
 
     public void verFavoritos() {
         Intent i = new Intent(this, MascotasFavoritas.class);
+        startActivity(i);
+    }
+
+    public void contacto(){
+        Intent i = new Intent(this, Contacto.class);
+        startActivity(i);
+    }
+
+    public void bio(){
+        Intent i = new Intent(this, Biografia.class);
         startActivity(i);
     }
 }
